@@ -14,7 +14,7 @@ const PhotoCapture = () => {
 
   useEffect(() => {
     const fetchTeams = async () => {
-      const res = await api.get('/admin/teams/monitoring');
+      const res = await api.get('/volunteer/assigned-teams');
       setTeams(Array.isArray(res.data) ? res.data : []);
     };
     fetchTeams();
