@@ -132,12 +132,13 @@ const getScoreboard = async (req, res) => {
 const getDashboardSummary = async (req, res) => {
   try {
     // Consolidated high-performance query for all dashboard metrics
-    const [teamsRes, attendanceStatsRes, configRes, sessionConfigRes, selectionConfigRes] = await Promise.all([
+    const [teamsRes, attendanceStatsRes, configRes, sessionConfigRes, selectionConfigRes, roundRes] = await Promise.all([
       supabase.from('teams').select('id, problem_id', { count: 'exact' }),
       supabase.from('global_config').select('value').eq('key', 'active_session').maybeSingle(),
       supabase.from('global_config').select('value').eq('key', 'attendance_open').maybeSingle(),
       supabase.from('global_config').select('value').eq('key', 'attendance_sessions').maybeSingle(),
-      supabase.from('global_config').select('value').eq('key', 'problem_selection_state').maybeSingle()
+      supabase.from('global_config').select('value').eq('key', 'problem_selection_state').maybeSingle(),
+      supabase.from('global_config').select('value').eq('key', 'active_round').maybeSingle()
     ]);
 
     const totalTeams = teamsRes.count || 109;
@@ -166,6 +167,7 @@ const getDashboardSummary = async (req, res) => {
         problems_selected: problemsSelected,
         reviews_completed: 0 
       },
+      active_round: roundRes.data?.value || "1",
       attendance: {
         total: totalTeams,
         present: uniquePresent,

@@ -93,6 +93,9 @@ const getDashboardState = async (req, res) => {
       state = typeof config.value === 'string' ? JSON.parse(config.value) : config.value;
     }
     
+    const { data: roundConfig } = await supabase.from('global_config').select('value').eq('key', 'active_round').maybeSingle();
+    state.active_round = String(roundConfig?.value || "1");
+
     // Add team-specific data
     state.problem_id = teamData?.problem_id;
     state.attendance_status = teamData?.attendance_status;
