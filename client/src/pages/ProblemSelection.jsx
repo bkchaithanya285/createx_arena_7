@@ -175,23 +175,23 @@ const ProblemSelection = () => {
   }
 
   return (
-    <div className="p-10 flex flex-col gap-10">
-      <div className="flex items-center justify-between">
+    <div className="p-4 md:p-10 flex flex-col gap-6 md:gap-10">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
-          <h2 className="text-4xl font-extrabold uppercase tracking-widest text-white wine-glow mb-2">Problem Statements</h2>
-          <p className="text-arena-muted font-light tracking-wide uppercase italic">Cluster {team.cluster} • Select Your Innovation Challenge</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-widest text-white wine-glow mb-2">Problem Statements</h2>
+          <p className="text-arena-muted text-xs md:text-sm font-light tracking-wide uppercase italic">Cluster {team.cluster} • Select Your Challenge</p>
         </div>
         
-        <div className="flex items-center gap-8">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-8 w-full lg:w-auto">
            {timeLeft > 0 && (
-             <div className="flex flex-col items-end">
+             <div className="flex flex-col items-start md:items-end w-full md:w-auto">
                 <span className="text-[10px] font-black text-arena-rose uppercase tracking-[.3em] mb-1">Unlocking In</span>
-                <span className="text-3xl font-black text-white tabular-nums tracking-widest leading-none">
+                <span className="text-2xl md:text-3xl font-black text-white tabular-nums tracking-widest leading-none">
                    {formatTime(timeLeft)}
                 </span>
              </div>
            )}
-           <div className="relative group w-96">
+           <div className="relative group w-full lg:w-96">
              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-arena-muted" />
              <input
                type="text"
@@ -294,7 +294,7 @@ const ProblemCard = React.memo(({ problem, team, isAllocated, anySelected, timeL
   return (
     <motion.div 
       whileHover={canSelectNow ? { y: -5, scale: 1.02 } : {}}
-      className={`glass-card p-10 flex flex-col gap-6 relative overflow-hidden transition-all duration-500
+      className={`glass-card p-6 md:p-10 flex flex-col gap-4 md:gap-6 relative overflow-hidden transition-all duration-500
         ${isAllocated ? 'border-2 border-green-500 bg-green-500/5 shadow-[0_0_40px_rgba(34,197,94,0.2)]' : 'border-white/10'}
         ${(anySelected && !isAllocated) || (isClusterTaken && !isAllocated) ? 'opacity-30 grayscale-[0.9] pointer-events-none' : ''}
       `}
@@ -326,11 +326,11 @@ const ProblemCard = React.memo(({ problem, team, isAllocated, anySelected, timeL
             <span className="text-[9px] font-black text-white">{problem.taken_count || 0}/3</span>
           </div>
         </div>
-        <h3 className="text-2xl font-black uppercase tracking-widest text-white leading-tight">{problem.title}</h3>
+        <h3 className="text-xl md:text-2xl font-black uppercase tracking-widest text-white leading-tight">{problem.title}</h3>
       </div>
 
       <div className="flex-1">
-        <p className="text-arena-muted leading-relaxed font-light text-lg">
+        <p className="text-arena-muted leading-relaxed font-light text-sm md:text-lg">
           {problem.description}
         </p>
       </div>
