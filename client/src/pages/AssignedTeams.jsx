@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, 
-  Search, 
+  Search as SearchIcon, 
   Star, 
   Camera, 
   CheckCircle2, 
@@ -67,7 +67,7 @@ const AssignedTeams = () => {
         </div>
         
         <div className="relative group w-96">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-arena-muted" />
+          <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-arena-muted" />
           <input
             type="text"
             placeholder="Search team ID or name..."

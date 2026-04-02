@@ -4,7 +4,7 @@ import {
   Camera, 
   Send, 
   Image as ImageIcon, 
-  Search, 
+  Search as SearchIcon, 
   Clock, 
   CheckCircle2, 
   Plus, 

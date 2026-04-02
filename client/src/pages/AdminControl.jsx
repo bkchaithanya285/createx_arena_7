@@ -239,7 +239,7 @@ const AdminControl = () => {
                    : 'bg-white/5 border border-white/10 text-red-500 hover:bg-red-500/10'
                  } disabled:opacity-50`}
                >
-                 <Lock className="w-8 h-8" />
+                 <LockIcon className="w-8 h-8" />
                  <span className="text-xs font-black uppercase tracking-tighter">Close (Harden System)</span>
                </button>
              </div>
@@ -305,7 +305,7 @@ const AdminControl = () => {
                    : 'bg-white/5 border border-white/10 text-red-500 hover:bg-red-500/10 shadow-red-500/10 shadow-xl'
                  } disabled:opacity-50 font-black uppercase`}
                >
-                 <Lock className="w-8 h-8" />
+                 <LockIcon className="w-8 h-8" />
                  <span className="text-xs tracking-widest">Emergency Seal</span>
                </button>
              </div>

@@ -55,7 +55,7 @@ const Scoreboard = () => {
           className="glass-card w-full max-w-md p-10 flex flex-col gap-8 border-t-4 border-t-arena-rose"
         >
           <div className="text-center">
-            <Lock className="w-12 h-12 text-arena-rose mx-auto mb-4" />
+            <LockIcon className="w-12 h-12 text-arena-rose mx-auto mb-4" />
             <h2 className="text-2xl font-black uppercase tracking-widest text-white wine-glow">Restricted Access</h2>
             <p className="text-arena-muted text-xs font-light tracking-wide uppercase mt-2 italic">Official Scoreboard - Authorization Required</p>
           </div>

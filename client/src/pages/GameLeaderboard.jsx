@@ -6,7 +6,7 @@ import {
   Puzzle, 
   Palette, 
   Medal, 
-  Search,
+  Search as SearchIcon,
   Loader2,
   ChevronRight
 } from 'lucide-react';
@@ -58,7 +58,7 @@ const GameLeaderboard = () => {
         </div>
 
         <div className="relative group w-80">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-arena-muted" />
+          <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-arena-muted" />
           <input
             type="text"
             placeholder="Search teams..."

@@ -51,7 +51,7 @@ const FinalLeaderboard = () => {
             >
               <div className="w-32 h-32 border-2 border-dashed border-arena-rose/30 rounded-full" />
             </motion.div>
-            <Lock className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-arena-rose" />
+            <LockIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-arena-rose" />
           </div>
           <div className="text-center">
             <h3 className="text-3xl font-black uppercase tracking-[0.3em] text-white wine-glow mb-2">Results Not Announced</h3>
@@ -62,7 +62,7 @@ const FinalLeaderboard = () => {
         <div className="flex flex-col gap-8">
           <div className="flex items-center justify-between glass-card p-6 border-white/5">
             <div className="relative group w-96">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-arena-muted" />
+              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-arena-muted" />
               <input
                 type="text"
                 placeholder="Search squad..."

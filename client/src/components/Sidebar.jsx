@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  Search, 
+  Search as SearchIcon, 
   UploadCloud, 
   QrCode, 
   Gamepad2, 
@@ -23,7 +23,7 @@ const Sidebar = ({ role }) => {
   const menus = {
     team: [
       { name: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" />, path: '/dashboard' },
-      { name: 'Problem Selection', icon: <Search className="w-5 h-5" />, path: '/dashboard/selection' },
+      { name: 'Problem Selection', icon: <SearchIcon className="w-5 h-5" />, path: '/dashboard/selection' },
       { name: 'Attendance', icon: <ClipboardCheck className="w-5 h-5" />, path: '/dashboard/attendance' },
       { name: 'Game Zone', icon: <Gamepad2 className="w-5 h-5" />, path: '/dashboard/games' },
       { name: 'Game Leaderboard', icon: <Trophy className="w-5 h-5" />, path: '/dashboard/game-leaderboard' },
@@ -46,7 +46,7 @@ const Sidebar = ({ role }) => {
       { name: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" />, path: '/admin' },
       { name: 'Team Management', icon: <Users className="w-5 h-5" />, path: '/admin/teams' },
       { name: 'Problem Statements', icon: <FileText className="w-5 h-5" />, path: '/admin/problems' },
-      { name: 'Selection Control', icon: <Search className="w-5 h-5" />, path: '/admin/selection-control' },
+      { name: 'Selection Control', icon: <SearchIcon className="w-5 h-5" />, path: '/admin/selection-control' },
       { name: 'Attendance Control', icon: <QrCode className="w-5 h-5" />, path: '/admin/attendance' },
       { name: 'Reviewer Mgmt', icon: <Users className="w-5 h-5" />, path: '/admin/reviewers' },
       { name: 'Review Control', icon: <ClipboardCheck className="w-5 h-5" />, path: '/admin/review-control' },

@@ -5,7 +5,7 @@ import {
   CheckCircle2, 
   AlertCircle, 
   Clock, 
-  Search, 
+  Search as SearchIcon, 
   Loader2,
   FileText,
   UserPlus
@@ -51,7 +51,7 @@ const TeamMonitoring = () => {
         </div>
         
         <div className="relative group w-96">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-arena-muted" />
+          <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-arena-muted" />
           <input
             type="text"
             placeholder="Quick search team..."
