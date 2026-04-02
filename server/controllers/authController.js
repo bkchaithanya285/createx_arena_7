@@ -5,9 +5,9 @@ require('dotenv').config();
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE);
 
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  console.error('[CRITICAL] JWT_SECRET not found in environment.');
+const JWT_SECRET = process.env.JWT_SECRET || 'createx_super_secret_key_2024';
+if (!process.env.JWT_SECRET) {
+  console.warn('[WARNING] JWT_SECRET not found in environment. Using development fallback.');
 }
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '9390091939@csikare';
 const REVIEWER_PASSWORD = process.env.REVIEWER_PASSWORD || 'CREATEX@9390198225';
