@@ -36,25 +36,18 @@ const fetchTeams = async () => {
   return data || [];
 };
 
-const getReviewerSlot = (teamIdStr, round) => {
+const getReviewerSlot = (teamIdStr) => {
   const tid = parseInt(teamIdStr.replace('CREATOR-', ''));
   if (isNaN(tid)) return null;
 
-  if (String(round) === "1") {
-    if (tid >= 1 && tid <= 22) return "R1";
-    if (tid >= 23 && tid <= 45) return "R2";
-    if (tid >= 46 && tid <= 67) return "R3";
-    if (tid >= 68 && tid <= 89) return "R4";
-    if (tid >= 90 && tid <= 109) return "R5";
-  } else {
-    // Round 2 & 3
-    if (tid >= 1 && tid <= 18) return "R1";
-    if (tid >= 19 && tid <= 37) return "R2";
-    if (tid >= 38 && tid <= 56) return "R3";
-    if (tid >= 57 && tid <= 75) return "R4";
-    if (tid >= 76 && tid <= 94) return "R5";
-    if (tid >= 95 && tid <= 109) return "R6";
-  }
+  // UNIFIED MAPPING (Same for all rounds R1, R2, R3)
+  if (tid >= 1 && tid <= 18) return "R1";
+  if (tid >= 19 && tid <= 37) return "R2";
+  if (tid >= 38 && tid <= 56) return "R3";
+  if (tid >= 57 && tid <= 75) return "R4";
+  if (tid >= 76 && tid <= 94) return "R5";
+  if (tid >= 95 && tid <= 109) return "R6";
+  
   return null;
 };
 

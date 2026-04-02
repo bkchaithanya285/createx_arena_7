@@ -746,16 +746,7 @@ export const AdminReviewers = () => {
     }));
   };
 
-  const getRanges = (round) => {
-    if (String(round) === "1") {
-      return [
-        { slot: 'R1', range: 'Teams 1-22' },
-        { slot: 'R2', range: 'Teams 23-45' },
-        { slot: 'R3', range: 'Teams 46-67' },
-        { slot: 'R4', range: 'Teams 68-89' },
-        { slot: 'R5', range: 'Teams 90-109' },
-      ];
-    }
+  const getRanges = () => {
     return [
       { slot: 'R1', range: 'Teams 1-18' },
       { slot: 'R2', range: 'Teams 19-37' },

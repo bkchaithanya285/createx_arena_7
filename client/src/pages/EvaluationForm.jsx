@@ -42,18 +42,26 @@ const EvaluationForm = () => {
     ]
   };
 
+  const [searchParams] = useSearchParams();
+  const queryRound = searchParams.get('round');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // 1. Fetch active round and assignments
+        // 1. Fetch assigned data for all rounds
         const assRes = await api.get('/reviewer/assigned-teams');
-        const round = assRes.data.activeRound || '1';
+        
+        // 2. Determine targeted round (URL param or fallback)
+        const round = queryRound || Object.keys(assRes.data.statuses).find(r => assRes.data.statuses[r] === 'open') || '1';
         setActiveRound(round);
 
-        const currentTeam = assRes.data.teams.find(t => t.id === teamId);
+        // 3. Find team in that specific round's dataset
+        const currentRoundTeams = assRes.data.rounds[round] || [];
+        const currentTeam = currentRoundTeams.find(t => t.id === teamId);
+        
         if (!currentTeam) {
-            alert("This team is not assigned to you for this round.");
+            alert(`This team is not assigned to you for Round ${round}.`);
             return navigate('/reviewer');
         }
         setTeam(currentTeam);

@@ -47,42 +47,44 @@ const getAssignedTeams = async (req, res) => {
   const slotKey = "R" + slot;
 
   try {
-    // 1. Get active round (Check standalone key first, then fallback to selection state)
-    const { data: roundConfig } = await supabase.from('global_config').select('value').eq('key', 'active_round').maybeSingle();
-    let activeRound = "1";
-    if (roundConfig?.value) {
-       activeRound = String(roundConfig.value);
-    } else {
-       const { data: selectionConfig } = await supabase.from('global_config').select('value').eq('key', 'problem_selection_state').maybeSingle();
-       const state = typeof selectionConfig?.value === 'string' ? JSON.parse(selectionConfig.value) : selectionConfig?.value;
-       activeRound = String(state?.active_round || "1");
-    }
+    // 1. Fetch ALL round statuses from global config
+    const [rd1, rd2, rd3] = await Promise.all([
+      supabase.from('global_config').select('value').eq('key', 'review_round_1_status').maybeSingle(),
+      supabase.from('global_config').select('value').eq('key', 'review_round_2_status').maybeSingle(),
+      supabase.from('global_config').select('value').eq('key', 'review_round_3_status').maybeSingle()
+    ]);
+    const statuses = {
+      1: rd1.data?.value || 'closed',
+      2: rd2.data?.value || 'closed',
+      3: rd3.data?.value || 'closed'
+    };
 
-    // 2. Fetch teams using the high-performance cache
+    // 2. Fetch ALL teams using the high-performance cache
     const allTeams = await fetchTeams();
+    const assignedTeams = allTeams.filter(t => getReviewerSlot(t.id) === slotKey);
 
-    const assignedTeams = allTeams.filter(t => getReviewerSlot(t.id, activeRound) === slotKey);
+    if (assignedTeams.length === 0) return res.json({ rounds: {}, statuses });
 
-    if (assignedTeams.length === 0) return res.json({ teams: [], activeRound });
-
-    // 3. Fetch review status for these teams specifically FOR THIS ROUND
-    const assignedTeamIds = assignedTeams.map(t => t.id);
-    const { data: reviews } = await supabase
+    // 3. Fetch ALL review records for this reviewer across ALL rounds
+    const { data: allReviews } = await supabase
       .from('reviews')
-      .select('team_id')
-      .eq('reviewer_id', req.user.id)
-      .eq('round', activeRound);
+      .select('team_id, round')
+      .eq('reviewer_id', req.user.id);
 
-    const teamData = assignedTeams.map(t => {
-      const hasEvaluated = reviews?.some(r => r.team_id === t.id);
-      return {
-        ...t,
-        status: hasEvaluated ? 'Completed' : 'Pending',
-        currentRound: activeRound
-      };
+    // 4. Map data into rounds
+    const roundsData = {};
+    [1, 2, 3].forEach(r => {
+      roundsData[r] = assignedTeams.map(t => {
+        const hasEvaluated = allReviews?.some(rev => rev.team_id === t.id && String(rev.round) === String(r));
+        return {
+          ...t,
+          status: hasEvaluated ? 'Completed' : 'Pending',
+          currentRound: String(r)
+        };
+      });
     });
 
-    res.json({ teams: teamData, activeRound });
+    res.json({ rounds: roundsData, statuses });
   } catch (err) {
     console.error('getAssignedTeams Error:', err);
     res.status(500).json({ error: 'Failed to fetch assigned teams' });
