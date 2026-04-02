@@ -154,6 +154,14 @@ const getDashboardState = async (req, res) => {
       state.assigned_reviewer = "Syncing...";
     }
 
+    // EXTRA: Fetch round statuses for Admin UI visibility
+    const { data: rd1 } = await supabase.from('global_config').select('value').eq('key', 'review_round_1_status').maybeSingle();
+    const { data: rd2 } = await supabase.from('global_config').select('value').eq('key', 'review_round_2_status').maybeSingle();
+    const { data: rd3 } = await supabase.from('global_config').select('value').eq('key', 'review_round_3_status').maybeSingle();
+    state.review_round_1_status = rd1?.value || 'closed';
+    state.review_round_2_status = rd2?.value || 'closed';
+    state.review_round_3_status = rd3?.value || 'closed';
+
     res.json(state);
   } catch (err) {
     console.error('getDashboardState error:', err);

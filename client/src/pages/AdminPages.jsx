@@ -726,11 +726,15 @@ export const AdminReviewers = () => {
     if (!window.confirm(`SENSITIVE OPERATION: Switch global system to Round ${r}?`)) return;
     setLoading(true);
     try {
-      // Update active_round in config (syncs all teams/reviewers)
+      // 1. Update active_round in config (syncs all teams/reviewers)
       await api.post('/admin/config', { key: 'active_round', value: r });
+      
+      // 2. AUTO-OPEN the phase for that round
+      await api.post('/admin/config', { key: `review_round_${r}_status`, value: 'open' });
+
       setActiveRound(r);
       setSelectedRound(r); // <--- SYNC ON GLOBAL CHANGE
-      alert(`SYSTEM ALERT: Now Operating in Round ${r}`);
+      alert(`SYSTEM ALERT: Now Operating in Round ${r} (Phase Opened)`);
     } catch (err) { alert('Failed to update system round'); }
     finally { setLoading(false); }
   };
@@ -865,10 +869,19 @@ export const AdminReviewControl = () => {
   const toggleRound = async (round, status) => {
     setLoading(prev => ({ ...prev, [`${round}-${status}`]: true }));
     try {
+      // 1. Update the session phase status (for UI visibility)
       await api.post('/admin/config', { key: `review_round_${round}_status`, value: status });
+      
+      // 2. CRITICAL: If opening a round, also make it the GLOBAL active round
+      if (status === 'open') {
+        await api.post('/admin/config', { key: 'active_round', value: String(round) });
+      }
+
       setRoundStatus(prev => ({ ...prev, [round]: status }));
-      alert(`Round ${round} ${status === 'open' ? 'Opened' : 'Closed'}`);
-    } catch (err) {} finally {
+      alert(`Round ${round} ${status === 'open' ? 'Opened & Set Active' : 'Closed'}`);
+    } catch (err) {
+      alert('Failed to update round status');
+    } finally {
       setLoading(prev => ({ ...prev, [`${round}-${status}`]: false }));
     }
   };
