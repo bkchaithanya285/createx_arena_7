@@ -1,13 +1,18 @@
 import axios from 'axios';
 
+const rawBaseURL = import.meta.env.VITE_API_BASE_URL || `http://${window.location.hostname}:8080/api`;
+const baseURL = rawBaseURL.endsWith('/') ? rawBaseURL : `${rawBaseURL}/`;
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || `http://${window.location.hostname}:8080/api`
+  baseURL
 });
 
 // Request Interceptor: Automatically attach the token to every request
 api.interceptors.request.use(
   (config) => {
-    console.log(`[API Request] -> ${config.method.toUpperCase()} ${config.url}`);
+    // Log the full absolute URL for better production debugging
+    const fullURL = `${config.baseURL}${config.url.startsWith('/') ? config.url.substring(1) : config.url}`;
+    console.log(`[API Request] -> ${config.method.toUpperCase()} ${fullURL}`);
     const token = localStorage.getItem('arena_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
