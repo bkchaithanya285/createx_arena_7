@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const ExcelJS = require('exceljs');
 require('dotenv').config();
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE);
@@ -182,79 +183,152 @@ const getDashboardSummary = async (req, res) => {
 };
 
 const exportData = async (req, res) => {
-  const { sessionId, mode } = req.query; // mode: 'all', 'team-wise', 'present-only', 'pending-only'
-  
+  const { type, sessionId, mode } = req.query;
+
   try {
-    if (!sessionId) return res.status(400).json({ error: 'Session ID required' });
-    
-    // Fetch Session Detail
-    const { data: sessionInfo } = await supabase.from('session_registry').select('session_name').eq('id', sessionId).maybeSingle();
-    const sessionName = sessionInfo?.session_name || 'Export';
-
-    // Fetch Teams (using cache) & Records
-    const teams = await fetchTeams();
-    const { data: attendance } = await supabase.from('mission_reports').select('*').eq('session_id', sessionId);
-    
-    let reportData = [];
-
-    if (mode === 'team-wise') {
-      reportData = (teams || []).map(t => {
-        const teamAttendance = (attendance || []).filter(a => a.team_id === t.id);
-        const totalMembers = Array.isArray(t.members) ? t.members.length : 5;
-        return {
-          'Team ID': t.id,
-          'Team Name': t.name,
-          'Cluster': t.cluster,
-          'Status': teamAttendance.length === totalMembers ? 'Completed' : (teamAttendance.length > 0 ? 'Partial' : 'Pending'),
-          'Members Present': `${teamAttendance.length} / ${totalMembers}`,
-          'Names Present': teamAttendance.map(a => a.name).join(', '),
-          'Session': sessionName
-        };
-      });
-    } else if (mode === 'present-only') {
-      reportData = (attendance || []).map(a => ({
-        'Team ID': a.team_id,
-        'Member ID': a.member_id,
-        'Member Name': a.name,
-        'Status': 'Present',
-        'Timestamp': new Date(a.scanned_at).toLocaleString(),
-        'Scanned By': a.scanned_by,
-        'Session': sessionName
-      }));
-    } else if (mode === 'pending-only') {
-      const presentTeamIds = new Set((attendance || []).map(a => a.team_id));
-      reportData = (teams || []).filter(t => !presentTeamIds.has(t.id)).map(t => ({
-        'Team ID': t.id,
-        'Team Name': t.name,
-        'Cluster': t.cluster,
-        'Status': 'Pending',
-        'Session': sessionName
-      }));
-    } else { // 'all' (Detailed row per member for ALL teams)
-      reportData = (teams || []).flatMap(t => {
-        const teamMembers = Array.isArray(t.members) ? t.members : JSON.parse(t.members || '[]');
-        const teamAttendance = (attendance || []).filter(a => a.team_id === t.id);
-        
-        return teamMembers.map(m => {
-          const isPresent = teamAttendance.some(a => String(a.member_id) === String(m.regNo || m.reg_no));
+    // 1. BACKWARD COMPATIBILITY: If sessionId + mode are provided (AdminAttendance component logic)
+    if (!type && sessionId && mode) {
+      // Original JSON-to-CSV fallback logic
+      const { data: sessionInfo } = await supabase.from('session_registry').select('session_name').eq('id', sessionId).maybeSingle();
+      const sessionName = sessionInfo?.session_name || 'Export';
+      const teams = await fetchTeams();
+      const { data: attendance } = await supabase.from('mission_reports').select('*').eq('session_id', sessionId);
+      
+      let reportData = [];
+      if (mode === 'team-wise') {
+        reportData = (teams || []).map(t => {
+          const teamAttendance = (attendance || []).filter(a => a.team_id === t.id);
+          const totalMembers = Array.isArray(t.members) ? t.members.length : 5;
           return {
             'Team ID': t.id,
             'Team Name': t.name,
             'Cluster': t.cluster,
-            'Member Name': m.name,
-            'Member ID': m.regNo || m.reg_no,
-            'Status': isPresent ? 'Present' : 'Absent',
-            'Timestamp': isPresent ? new Date(teamAttendance.find(a => String(a.member_id) === String(m.regNo || m.reg_no))?.scanned_at).toLocaleString() : 'N/A',
+            'Status': teamAttendance.length === totalMembers ? 'Completed' : (teamAttendance.length > 0 ? 'Partial' : 'Pending'),
+            'Members Present': `${teamAttendance.length} / ${totalMembers}`,
+            'Names Present': teamAttendance.map(a => a.name).join(', '),
             'Session': sessionName
           };
+        });
+      } else if (mode === 'present-only') {
+        reportData = (attendance || []).map(a => ({
+          'Team ID': a.team_id,
+          'Member ID': a.member_id,
+          'Member Name': a.name,
+          'Status': 'Present',
+          'Timestamp': new Date(a.scanned_at).toLocaleString(),
+          'Session': sessionName
+        }));
+      } else if (mode === 'pending-only') {
+        const presentTeamIds = new Set((attendance || []).map(a => a.team_id));
+        reportData = (teams || []).filter(t => !presentTeamIds.has(t.id)).map(t => ({
+          'Team ID': t.id,
+          'Team Name': t.name,
+          'Status': 'Pending',
+          'Session': sessionName
+        }));
+      } else {
+        reportData = (teams || []).flatMap(t => {
+          const teamMembers = Array.isArray(t.members) ? t.members : JSON.parse(t.members || '[]');
+          const teamAttendance = (attendance || []).filter(a => a.team_id === t.id);
+          return teamMembers.map(m => {
+            const isPresent = teamAttendance.some(a => String(a.member_id) === String(m.regNo || m.reg_no));
+            return {
+              'Team ID': t.id,
+              'Member Name': m.name,
+              'Member ID': m.regNo || m.reg_no,
+              'Status': isPresent ? 'Present' : 'Absent',
+              'Session': sessionName
+            };
+          });
+        });
+      }
+      return res.json(reportData);
+    }
+
+    // 2. NEW: REAL EXCEL GENERATION (AdminExport component logic)
+    if (!type) return res.status(400).json({ error: 'Export type or Session ID required' });
+
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet('Export Data');
+    let filename = `${type}_export_${new Date().toISOString().slice(0,10)}.xlsx`;
+
+    if (type === 'problems') {
+      const teams = await fetchTeams();
+      const { data: problems } = await supabase.from('problems').select('*');
+      const probMap = (problems || []).reduce((acc, p) => ({ ...acc, [p.id]: p.title }), {});
+
+      sheet.columns = [
+        { header: 'TEAM ID', key: 'id', width: 20 },
+        { header: 'TEAM NAME', key: 'name', width: 30 },
+        { header: 'CLUSTER', key: 'cluster', width: 15 },
+        { header: 'PROBLEM ID', key: 'probId', width: 20 },
+        { header: 'PROBLEM TITLE', key: 'probTitle', width: 50 },
+      ];
+
+      teams.forEach(t => {
+        sheet.addRow({
+          id: t.id,
+          name: t.name,
+          cluster: t.cluster,
+          probId: t.problem_id || 'PENDING',
+          probTitle: probMap[t.problem_id] || 'MISSION PENDING'
+        });
+      });
+    } else if (type === 'teams') {
+      const teams = await fetchTeams();
+      sheet.columns = [
+        { header: 'TEAM ID', key: 'id', width: 20 },
+        { header: 'TEAM NAME', key: 'name', width: 30 },
+        { header: 'MEMBER NAME', key: 'mName', width: 30 },
+        { header: 'MEMBER REG', key: 'mReg', width: 20 },
+        { header: 'ROLE', key: 'mRole', width: 15 },
+      ];
+
+      (teams || []).forEach(t => {
+        const members = Array.isArray(t.members) ? t.members : JSON.parse(t.members || '[]');
+        members.forEach(m => {
+          sheet.addRow({
+            id: t.id,
+            name: t.name,
+            mName: m.name,
+            mReg: m.regNo || m.reg_no,
+            mRole: m.role || 'Member'
+          });
+        });
+      });
+    } else if (type === 'scores') {
+      const { data: scores } = await supabase.from('game_scores').select('*, teams(name)');
+      sheet.columns = [
+        { header: 'TEAM ID', key: 'tid', width: 15 },
+        { header: 'TEAM NAME', key: 'tname', width: 25 },
+        { header: 'GAME', key: 'game', width: 20 },
+        { header: 'SCORE', key: 'score', width: 15 },
+        { header: 'TIME/MOVES', key: 'meta', width: 20 },
+      ];
+      (scores || []).forEach(s => {
+        sheet.addRow({
+          tid: s.team_id,
+          tname: s.teams?.name || 'N/A',
+          game: s.game_name,
+          score: s.score,
+          meta: `Time: ${s.time_taken || 0}s | Moves: ${s.moves || 0}`
         });
       });
     }
 
-    res.json(reportData);
+    // Styling the header row
+    sheet.getRow(1).font = { bold: true };
+    sheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEFEFEF' } };
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    res.send(buffer);
+
   } catch (err) {
     console.error('exportData error:', err);
-    res.status(500).json({ error: 'Failed' });
+    res.status(500).json({ error: 'Export Failed', details: err.message });
   }
 };
 
