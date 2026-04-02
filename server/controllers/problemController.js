@@ -79,7 +79,7 @@ const selectProblem = async (req, res) => {
     if (io) io.emit('problem_selected', { problemId: selectedProblemId, cluster, teamId });
     
     problemsCache = null; // Invalidate
-    res.json({ message: 'Success!', selection: updatedTeam[0] });
+    res.json({ message: 'Success!', problemId: selectedProblemId });
   } catch (err) {
     console.error('CRITICAL Selection Error:', err);
     res.status(500).json({ error: 'Server synchronization failure.' });
