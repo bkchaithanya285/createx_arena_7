@@ -703,7 +703,9 @@ export const AdminReviewers = () => {
       setNames(nData || { "1": {}, "2": {}, "3": {} });
       
       const { data: rState } = await api.get('/teams/dashboard-state');
-      setActiveRound(String(rState.active_round || "1"));
+      const currentRound = String(rState.active_round || "1");
+      setActiveRound(currentRound);
+      setSelectedRound(currentRound); // <--- SYNC ON MOUNT
     } catch (err) { console.error(err); }
   };
 
@@ -727,6 +729,7 @@ export const AdminReviewers = () => {
       // Update active_round in config (syncs all teams/reviewers)
       await api.post('/admin/config', { key: 'active_round', value: r });
       setActiveRound(r);
+      setSelectedRound(r); // <--- SYNC ON GLOBAL CHANGE
       alert(`SYSTEM ALERT: Now Operating in Round ${r}`);
     } catch (err) { alert('Failed to update system round'); }
     finally { setLoading(false); }
