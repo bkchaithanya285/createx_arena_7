@@ -15,7 +15,6 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import api from '../utils/api';
-import api from '../utils/api';
 
 const AssignedTeams = () => {
   const [teams, setTeams] = useState([]);

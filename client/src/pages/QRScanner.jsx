@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Camera, QrCode, CheckCircle, ShieldAlert, Loader2, RefreshCw, XCircle, Play, Users, UserCheck } from 'lucide-react';
 import { Html5Qrcode } from 'html5-qrcode';
-import api from '../utils/api';
 import socket from '../utils/socket';
-import api from '../utils/api';
 
 const QRScanner = () => {
   const [step, setStep] = useState(1); // 1: Scan, 2: Members, 3: Success
