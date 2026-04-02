@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Users, Star, RefreshCw, Award, Lock as LockIcon, Search as SearchIcon, ArrowUp, ArrowDown } from 'lucide-react';
+import { Trophy, Users, Star, RefreshCw, Award, Lock as LockIcon, Search as SearchIcon, ArrowUp, ArrowDown, ShieldCheck, Download, Loader2, ArrowRight } from 'lucide-react';
 import api from '../utils/api';
 
 const Scoreboard = () => {
@@ -98,7 +98,7 @@ const Scoreboard = () => {
         
         <div className="flex gap-4">
           <div className="relative group w-72">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-arena-muted" />
+            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-arena-muted" />
             <input
               type="text"
               placeholder="Search team..."

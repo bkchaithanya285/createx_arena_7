@@ -3,25 +3,32 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import { 
-  Trophy, 
-  Target, 
-  Zap, 
-  Rocket, 
   Shield as ShieldIcon, 
+  Trophy, 
   Award, 
+  Zap, 
+  Target, 
+  Activity, 
   Users, 
-  Search as SearchIcon, 
-  Lock as LockIcon, 
+  Clock, 
   CheckCircle2, 
-  AlertCircle,
-  Clock,
-  ChevronRight,
-  Loader2,
+  AlertCircle, 
+  Search as SearchIcon, 
+  ChevronRight, 
   Gamepad2,
-  Star,
-  Activity,
+  Lock as LockIcon,
+  Rocket,
+  Star as StarIcon,
+  HelpCircle,
+  QrCode,
+  Loader2,
+  MapPin,
+  UserCheck,
+  FileCheck,
   Plus,
-  Play
+  Play,
+  Vote,
+  Bell
 } from 'lucide-react';
 import api from '../utils/api';
 import socket from '../utils/socket';
@@ -309,7 +316,7 @@ const Dashboard = () => {
                   className={`glass-button !px-16 !py-6 !text-2xl !rounded-full group shadow-wine-glow transition-all ${!problemsState.revealed ? 'opacity-20 pointer-events-none grayscale' : 'hover:scale-110'}`}
                 >
                   <div className="flex items-center gap-4">
-                     {problemsState.revealed ? <Rocket className="w-8 h-8 animate-bounce-slow" /> : <Lock className="w-8 h-8" />}
+                     {problemsState.revealed ? <Rocket className="w-8 h-8 animate-bounce-slow" /> : <LockIcon className="w-8 h-8" />}
                      {problemsState.revealed ? "Enter Selection Zone" : "Vault Access Sealed"}
                      <ChevronRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
                   </div>

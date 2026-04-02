@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Gamepad2, 
-  Brain, 
+  RotateCcw, 
   Puzzle, 
   Palette, 
   Lock as LockIcon, 
@@ -11,7 +11,18 @@ import {
   Trophy,
   ArrowRight,
   Loader2,
-  ChevronLeft
+  ChevronLeft,
+  Brain,
+  Clock,
+  AlertCircle,
+  ChevronRight,
+  Play,
+  RefreshCw,
+  Star,
+  Info,
+  Target,
+  Zap,
+  Search as SearchIcon
 } from 'lucide-react';
 import { io } from 'socket.io-client';
 import api from '../utils/api';
@@ -130,7 +141,7 @@ const GameZone = () => {
         <div>
           <h2 className="text-4xl font-extrabold uppercase tracking-widest text-white wine-glow mb-2">Game Zone</h2>
           <p className="text-arena-muted font-light tracking-wide uppercase italic tracking-[0.2em] flex items-center gap-2">
-            {!isUnlocked ? <Lock className="w-4 h-4 text-arena-rose" /> : <Gamepad2 className="w-4 h-4 text-green-500" />}
+            {!isUnlocked ? <LockIcon className="w-4 h-4 text-arena-rose" /> : <Gamepad2 className="w-4 h-4 text-green-500" />}
             {!isUnlocked ? 'LOCKED BY ADMIN' : 'CHALLENGES UNLOCKED'}
           </p>
         </div>
@@ -139,7 +150,7 @@ const GameZone = () => {
       {!isUnlocked ? (
         <div className="h-96 flex flex-col items-center justify-center gap-6 glass-card border-arena-rose/20">
           <div className="w-24 h-24 bg-arena-rose/10 rounded-full flex items-center justify-center text-arena-rose animate-pulse shadow-wine">
-            <Lock className="w-10 h-10" />
+            <LockIcon className="w-10 h-10" />
           </div>
           <div className="text-center">
             <h3 className="text-2xl font-bold uppercase tracking-widest text-white mb-2">Game Hub Offline</h3>

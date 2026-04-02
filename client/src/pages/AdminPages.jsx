@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Settings, Users, FileText, Search as SearchIcon, QrCode, UploadCloud, ClipboardCheck, Gamepad2, ImageIcon, Bell, Trophy, BarChart3, Loader2, RefreshCw, Check, CheckCircle2, AlertTriangle, AlertCircle, RefreshCcw, Rocket, Clock, RefreshCw as RefreshIcon, ChevronRight, Star, Activity, Play, Eye, Lock as LockIcon, ShieldCheck, Save, XCircle, History as HistoryIcon, ChevronDown } from 'lucide-react';
+import { Shield, Settings, Users, FileText, Search as SearchIcon, QrCode, UploadCloud, ClipboardCheck, Gamepad2, ImageIcon, Bell, Trophy, BarChart3, Loader2, RefreshCw, Check, CheckCircle2, AlertTriangle, AlertCircle, RefreshCcw, Rocket, Clock, RefreshCw as RefreshIcon, ChevronRight, Star, Activity, Play, Eye, Lock as LockIcon, Unlock as UnlockIcon, ShieldCheck, Save, XCircle, History as HistoryIcon, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { io } from 'socket.io-client';
 import api from '../utils/api';
@@ -975,7 +975,7 @@ export const AdminGameControl = () => {
                   disabled={loading || unlocked}
                   className={`glass-button !py-4 !px-6 flex items-center justify-center gap-3 w-full transition-all duration-500 ${unlocked ? 'opacity-20 grayscale cursor-not-allowed' : 'bg-green-500/20 text-green-400 !border-green-500/50 hover:bg-green-500/30 shadow-green-500/20 shadow-lg'}`}
                >
-                  <Unlock className="w-5 h-5" /> UNLOCK GAME ZONE
+                  <UnlockIcon className="w-5 h-5" /> UNLOCK GAME ZONE
                </button>
                <button 
                   onClick={() => toggleGameZone(false)} 

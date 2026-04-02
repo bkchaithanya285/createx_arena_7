@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   CheckCircle2, 
-  Lock, 
+  Lock as LockIcon, 
   AlertCircle, 
-  Search, 
+  Search as SearchIcon, 
   ShieldAlert,
   Loader2,
   ChevronRight
@@ -192,7 +192,7 @@ const ProblemSelection = () => {
              </div>
            )}
            <div className="relative group w-full lg:w-96">
-             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-arena-muted" />
+             <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-arena-muted" />
              <input
                type="text"
                placeholder="Search problems..."

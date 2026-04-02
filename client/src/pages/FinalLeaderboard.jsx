@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Star, Target, Zap, Rocket, Shield, Award, Users, Search as SearchIcon, Lock as LockIcon, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Trophy, Star, Target, Zap, Rocket, Shield as ShieldIcon, Award, Users, Search as SearchIcon, Lock as LockIcon, CheckCircle2, AlertCircle, Medal, Clock, ShieldCheck, Loader2 } from 'lucide-react';
 import api from '../utils/api';
 
 const FinalLeaderboard = () => {
@@ -91,8 +91,8 @@ const FinalLeaderboard = () => {
               <tbody className="divide-y divide-white/5">
                 {loading ? (
                   <tr>
-                    <td colSpan="3" className="py-32 text-center">
-                      <Loader2 className="w-12 h-12 text-arena-rose animate-spin mx-auto" />
+                    <td colSpan="6" className="py-20 text-center">
+                      <Loader2 className="w-10 h-10 text-arena-rose animate-spin mx-auto" />
                     </td>
                   </tr>
                 ) : filteredData.length === 0 ? (

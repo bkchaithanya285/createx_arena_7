@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Rocket, Shield as ShieldIcon, Users, Lock as LockIcon, ChevronRight, AlertCircle, Loader2, Sparkles, Trophy, Database, ShieldCheck, Star } from 'lucide-react';
+import { Rocket, Shield as ShieldIcon, Users, Lock as LockIcon, User as UserIcon, ChevronRight, AlertCircle, Loader2, Sparkles, Trophy, Database, ShieldCheck, Star, ShieldAlert, ArrowRight } from 'lucide-react';
 import api from '../utils/api';
 
 const Login = () => {
@@ -80,7 +80,7 @@ const Login = () => {
           <form onSubmit={handleLogin} className="space-y-8">
             <div className="space-y-6">
               <div className="relative group">
-                <User className="absolute left-0 top-3 w-5 h-5 text-arena-muted group-focus-within:text-arena-rose transition-colors" />
+                <UserIcon className="absolute left-0 top-3 w-5 h-5 text-arena-muted group-focus-within:text-arena-rose transition-colors" />
                 <input
                   type="text"
                   placeholder="USERNAME / TEAM ID"
@@ -92,7 +92,7 @@ const Login = () => {
               </div>
 
               <div className="relative group">
-                <Lock className="absolute left-0 top-3 w-5 h-5 text-arena-muted group-focus-within:text-arena-rose transition-colors" />
+                 <LockIcon className="absolute left-0 top-3 w-5 h-5 text-arena-muted group-focus-within:text-arena-rose transition-colors" />
                 <input
                   type="password"
                   placeholder="PASSWORD / REG NO"
