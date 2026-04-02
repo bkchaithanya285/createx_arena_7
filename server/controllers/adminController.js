@@ -40,13 +40,17 @@ const getReviewerSlot = (teamIdStr) => {
   const tid = parseInt(teamIdStr.replace('CREATOR-', ''));
   if (isNaN(tid)) return null;
 
-  // UNIFIED MAPPING (Same for all rounds R1, R2, R3)
-  if (tid >= 1 && tid <= 18) return "R1";
-  if (tid >= 19 && tid <= 37) return "R2";
-  if (tid >= 38 && tid <= 56) return "R3";
-  if (tid >= 57 && tid <= 75) return "R4";
-  if (tid >= 76 && tid <= 94) return "R5";
-  if (tid >= 95 && tid <= 109) return "R6";
+  // 10-REVIEWER UNIFIED MAPPING (Same for all rounds R1, R2, R3)
+  if (tid >= 1 && tid <= 11) return "R1";
+  if (tid >= 12 && tid <= 22) return "R2";
+  if (tid >= 23 && tid <= 33) return "R3";
+  if (tid >= 34 && tid <= 44) return "R4";
+  if (tid >= 45 && tid <= 55) return "R5";
+  if (tid >= 56 && tid <= 66) return "R6";
+  if (tid >= 67 && tid <= 77) return "R7";
+  if (tid >= 78 && tid <= 88) return "R8";
+  if (tid >= 89 && tid <= 99) return "R9";
+  if (tid >= 100 && tid <= 109) return "R10";
   
   return null;
 };

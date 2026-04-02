@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Settings, Users, FileText, Search, QrCode, UploadCloud, ClipboardCheck, Gamepad2, ImageIcon, Bell, Trophy, BarChart3, Loader2, RefreshCw, Check, CheckCircle2, AlertTriangle, AlertCircle, RefreshCcw, Rocket, Clock, RefreshCw as RefreshIcon, ChevronRight, Star, Activity, Play, Eye, Lock, ShieldCheck, Save, XCircle, History as HistoryIcon } from 'lucide-react';
+import { Shield, Settings, Users, FileText, Search as SearchIcon, QrCode, UploadCloud, ClipboardCheck, Gamepad2, ImageIcon, Bell, Trophy, BarChart3, Loader2, RefreshCw, Check, CheckCircle2, AlertTriangle, AlertCircle, RefreshCcw, Rocket, Clock, RefreshCw as RefreshIcon, ChevronRight, Star, Activity, Play, Eye, Lock as LockIcon, ShieldCheck, Save, XCircle, History as HistoryIcon, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { io } from 'socket.io-client';
 import api from '../utils/api';
@@ -748,12 +748,16 @@ export const AdminReviewers = () => {
 
   const getRanges = () => {
     return [
-      { slot: 'R1', range: 'Teams 1-18' },
-      { slot: 'R2', range: 'Teams 19-37' },
-      { slot: 'R3', range: 'Teams 38-56' },
-      { slot: 'R4', range: 'Teams 57-75' },
-      { slot: 'R5', range: 'Teams 76-94' },
-      { slot: 'R6', range: 'Teams 95-109' },
+      { slot: 'R1', range: 'Teams 1-11' },
+      { slot: 'R2', range: 'Teams 12-22' },
+      { slot: 'R3', range: 'Teams 23-33' },
+      { slot: 'R4', range: 'Teams 34-44' },
+      { slot: 'R5', range: 'Teams 45-55' },
+      { slot: 'R6', range: 'Teams 56-66' },
+      { slot: 'R7', range: 'Teams 67-77' },
+      { slot: 'R8', range: 'Teams 78-88' },
+      { slot: 'R9', range: 'Teams 89-99' },
+      { slot: 'R10', range: 'Teams 100-109' },
     ];
   };
 
@@ -957,7 +961,7 @@ export const AdminGameControl = () => {
           <div className={`absolute inset-0 opacity-10 transition-all duration-1000 ${unlocked ? 'bg-green-500 shadow-[0_0_50px_rgba(34,197,94,0.2)]' : 'bg-red-500 shadow-[0_0_50px_rgba(239,68,68,0.2)]'}`} />
           <div className="relative z-10 flex flex-col items-center gap-6">
             <div className={`p-6 rounded-full border-2 transition-all duration-700 shadow-wine-glow ${unlocked ? 'bg-green-500/20 border-green-500 animate-pulse' : 'bg-red-500/10 border-red-500/30'}`}>
-              {unlocked ? <Rocket className="w-12 h-12 text-green-500" /> : <Lock className="w-12 h-12 text-red-500" />}
+              {unlocked ? <Rocket className="w-12 h-12 text-green-500" /> : <LockIcon className="w-12 h-12 text-red-500" />}
             </div>
             <div className="text-center">
               <h3 className="text-2xl font-black text-white uppercase tracking-widest">Vault Status</h3>
@@ -978,7 +982,7 @@ export const AdminGameControl = () => {
                   disabled={loading || !unlocked}
                   className={`glass-button !py-4 !px-6 flex items-center justify-center gap-3 w-full transition-all duration-500 ${!unlocked ? 'opacity-20 grayscale cursor-not-allowed' : 'bg-red-500/20 text-red-400 !border-red-500/50 hover:bg-red-500/30 shadow-red-500/20 shadow-lg'}`}
                >
-                  <Lock className="w-5 h-5" /> LOCK GAME ZONE
+                  <LockIcon className="w-5 h-5" /> LOCK GAME ZONE
                </button>
             </div>
           </div>

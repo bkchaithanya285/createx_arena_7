@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Camera, QrCode, CheckCircle, ShieldAlert, Loader2, RefreshCw, XCircle, Play, Users, UserCheck } from 'lucide-react';
+import { QrCode, Play, Trophy, Users, Clock, AlertTriangle, ShieldCheck, CheckCircle2, XCircle, Search as SearchIcon, Star, Target, Zap, Lock as LockIcon, User as UserIcon } from 'lucide-react';
 import { Html5Qrcode } from 'html5-qrcode';
 import socket from '../utils/socket';
 import api from '../utils/api';

@@ -3,25 +3,25 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import { 
-  BarChart3, 
-  Search, 
-  UploadCloud, 
-  QrCode, 
-  Gamepad2, 
-  Bell, 
-  MapPin, 
-  Users, 
-  Clock, 
-  ChevronRight, 
-  AlertCircle,
-  Vote,
-  Activity, 
-  FileCheck, 
   Trophy, 
-  UserCheck,
-  Rocket,
-  Lock,
-  Eye
+  Target, 
+  Zap, 
+  Rocket, 
+  Shield as ShieldIcon, 
+  Award, 
+  Users, 
+  Search as SearchIcon, 
+  Lock as LockIcon, 
+  CheckCircle2, 
+  AlertCircle,
+  Clock,
+  ChevronRight,
+  Loader2,
+  Gamepad2,
+  Star,
+  Activity,
+  Plus,
+  Play
 } from 'lucide-react';
 import api from '../utils/api';
 import socket from '../utils/socket';

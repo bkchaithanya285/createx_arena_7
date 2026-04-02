@@ -3,12 +3,12 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../utils/api';
 import { 
   ClipboardCheck, 
-  Lock, 
-  AlertTriangle, 
+  Lock as LockIcon, 
+  AlertTriangle as AlertTriangleIcon, 
   CheckCircle, 
   Send, 
   Loader2, 
-  Award,
+  Award as AwardIcon,
   ChevronRight 
 } from 'lucide-react';
 
@@ -24,21 +24,21 @@ const EvaluationForm = () => {
   const [error, setError] = useState('');
 
   const roundsConfig = {
-    1: [
-      { id: 'understanding', label: 'Understanding', max: 10 },
-      { id: 'creativity', label: 'Creativity', max: 10 },
-      { id: 'communication', label: 'Communication', max: 10 }
+    "1": [
+      { id: "understanding", label: "Understanding of Problem Statement", max: 10 },
+      { id: "creativity", label: "Individual Idea / Creativity", max: 10 },
+      { id: "presentation", label: "Presentation & Communication", max: 10 }
     ],
-    2: [
-      { id: 'technical', label: 'Technical', max: 10 },
-      { id: 'responsibility', label: 'Responsibility', max: 10 },
-      { id: 'collaboration', label: 'Collaboration', max: 10 }
+    "2": [
+      { id: "technical", label: "Technical Contribution (Coding/Design)", max: 10 },
+      { id: "task", label: "Task Completion & Responsibility", max: 10 },
+      { id: "collaboration", label: "Collaboration with Team", max: 10 }
     ],
-    3: [
-      { id: 'explanation', label: 'Explanation', max: 15 },
-      { id: 'problem_solving', label: 'Problem Solving', max: 10 },
-      { id: 'innovation', label: 'Innovation', max: 10 },
-      { id: 'real_world', label: 'Real-world', max: 5 }
+    "3": [
+      { id: "module", label: "Explanation of Implemented Module", max: 15 },
+      { id: "qa", label: "Problem Solving during Q&A", max: 10 },
+      { id: "innovation", label: "Innovation Contribution", max: 10 },
+      { id: "realWorld", label: "Real-world Understanding", max: 5 }
     ]
   };
 
@@ -164,7 +164,7 @@ const EvaluationForm = () => {
                 <span className="text-3xl font-black text-white tabular-nums">{Object.values(marks).reduce((a, b) => a + (parseInt(b) || 0), 0)}</span>
              </div>
              <div className="p-4 bg-arena-wine/30 rounded-2xl border border-arena-rose/30 shadow-wine-glow">
-                <Award className="w-8 h-8 text-arena-rose" />
+                 <AwardIcon className="w-8 h-8 text-arena-rose" />
              </div>
           </div>
         </div>
@@ -197,7 +197,7 @@ const EvaluationForm = () => {
 
           <div className="pt-10">
             <div className="bg-arena-wine/10 border border-arena-rose/20 p-6 rounded-2xl flex items-start gap-4 mb-8">
-                <AlertTriangle className="w-5 h-5 text-arena-rose mt-1 flex-shrink-0" />
+                <AlertTriangleIcon className="w-5 h-5 text-arena-rose mt-1 flex-shrink-0" />
                 <p className="text-[10px] leading-relaxed text-arena-muted font-normal uppercase tracking-tight italic">
                     By clicking submit, you are finalizing the scores for <span className="text-white font-bold">Round {activeRound}</span>. 
                     This action <span className="text-arena-rose font-bold">CANNOT BE UNDONE</span>. The system will automatically lock the form upon confirmation.

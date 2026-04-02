@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Trophy, 
-  Medal, 
-  Search, 
-  Clock, 
-  ShieldCheck, 
-  Loader2,
-  Lock,
-  Star
-} from 'lucide-react';
+import { Trophy, Star, Target, Zap, Rocket, Shield, Award, Users, Search as SearchIcon, Lock as LockIcon, CheckCircle2, AlertCircle } from 'lucide-react';
 import api from '../utils/api';
 
 const FinalLeaderboard = () => {

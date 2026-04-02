@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, User, ArrowRight, ShieldAlert } from 'lucide-react';
+import { Rocket, Shield as ShieldIcon, Users, Lock as LockIcon, ChevronRight, AlertCircle, Loader2, Sparkles, Trophy, Database, ShieldCheck, Star } from 'lucide-react';
 import api from '../utils/api';
 
 const Login = () => {

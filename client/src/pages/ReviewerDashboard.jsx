@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
-import { Users, FileDiff, CheckCircle, Search, Clock, Award } from 'lucide-react';
+import { Users, FileDiff, CheckCircle, Search as SearchIcon, Clock, Award as AwardIcon, Lock as LockIcon } from 'lucide-react';
 
 const ReviewerDashboard = () => {
   const [data, setData] = useState({ rounds: {}, statuses: { 1: 'closed', 2: 'closed', 3: 'closed' } });
@@ -90,7 +90,7 @@ const ReviewerDashboard = () => {
       <div className="glass-premium flex-1 flex flex-col overflow-hidden">
         <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/[0.02]">
           <h2 className="text-lg font-bold text-white uppercase tracking-widest flex items-center gap-3">
-            <Search className="w-5 h-5 text-arena-rose" />
+            <SearchIcon className="w-5 h-5 text-arena-rose" />
             Evaluation Roster • Round {activeTab}
           </h2>
           {data.statuses[activeTab] !== 'open' && (
@@ -137,7 +137,7 @@ const ReviewerDashboard = () => {
                        </button>
                     ) : (
                        <div className="p-2 text-arena-muted">
-                          <Lock className="w-4 h-4" />
+                          <LockIcon className="w-4 h-4" />
                        </div>
                     )}
                   </div>

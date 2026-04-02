@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  BarChart3, 
-  Download, 
-  Lock, 
-  ShieldCheck, 
-  AlertCircle, 
-  Search,
-  ArrowRight,
-  Loader2
-} from 'lucide-react';
+import { Trophy, Users, Star, RefreshCw, Award, Lock as LockIcon, Search as SearchIcon, ArrowUp, ArrowDown } from 'lucide-react';
 import api from '../utils/api';
 
 const Scoreboard = () => {

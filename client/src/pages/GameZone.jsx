@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Gamepad2, 
-  RotateCcw, 
+  Brain, 
   Puzzle, 
   Palette, 
-  Lock, 
+  Lock as LockIcon, 
   CheckCircle2, 
   XCircle,
   Trophy,

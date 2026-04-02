@@ -10,7 +10,7 @@ if (!process.env.JWT_SECRET) {
   console.warn('[WARNING] JWT_SECRET not found in environment. Using development fallback.');
 }
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '9390091939@csikare';
-const REVIEWER_PASSWORD = process.env.REVIEWER_PASSWORD || 'CREATEX@9390198225';
+const REVIEWER_PASSWORD = 'Createx@123';
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -25,8 +25,11 @@ const login = async (req, res) => {
       role = 'admin';
     }
     // 2. REVIEWER Login
-    else if (username.startsWith('reviewer_') && password === REVIEWER_PASSWORD) {
-      const { data: reviewer } = await supabase.from('reviewers').select('*').eq('id', username).single();
+    else if ((username.startsWith('review_') || username.startsWith('reviewer_')) && password === REVIEWER_PASSWORD) {
+      // Normalize username to reviewer_ format for legacy DB support if needed, 
+      // but the user requested review_X, so we prioritize that.
+      const dbId = username.startsWith('review_') ? username.replace('review_', 'reviewer_') : username;
+      const { data: reviewer } = await supabase.from('reviewers').select('*').eq('id', dbId).single();
       if (reviewer) {
         user = reviewer;
         role = 'reviewer';
