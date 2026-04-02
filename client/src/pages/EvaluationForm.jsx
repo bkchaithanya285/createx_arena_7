@@ -52,12 +52,16 @@ const EvaluationForm = () => {
         // 1. Fetch assigned data for all rounds
         const assRes = await api.get('/reviewer/assigned-teams');
         
+        if (!assRes.data || !assRes.data.statuses) {
+          throw new Error('Invalid assigned teams data');
+        }
+
         // 2. Determine targeted round (URL param or fallback)
         const round = queryRound || Object.keys(assRes.data.statuses).find(r => assRes.data.statuses[r] === 'open') || '1';
         setActiveRound(round);
 
         // 3. Find team in that specific round's dataset
-        const currentRoundTeams = assRes.data.rounds[round] || [];
+        const currentRoundTeams = assRes.data.rounds?.[round] || [];
         const currentTeam = currentRoundTeams.find(t => t.id === teamId);
         
         if (!currentTeam) {

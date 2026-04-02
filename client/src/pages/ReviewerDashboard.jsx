@@ -15,11 +15,15 @@ const ReviewerDashboard = () => {
     const fetchTeams = async () => {
       try {
         const res = await api.get('/reviewer/assigned-teams');
-        setData(res.data);
-        
-        // Auto-select first open round if current tab is closed
-        const firstOpen = Object.keys(res.data.statuses).find(r => res.data.statuses[r] === 'open');
-        if (firstOpen) setActiveTab(firstOpen);
+        if (res.data && res.data.statuses) {
+          setData(res.data);
+          
+          // Auto-select first open round if current tab is closed
+          const firstOpen = Object.keys(res.data.statuses).find(r => res.data.statuses[r] === 'open');
+          if (firstOpen) setActiveTab(firstOpen);
+        } else {
+          throw new Error('Invalid data structure');
+        }
         
       } catch (err) {
         console.error('Failed to fetch assigned teams:', err);
@@ -44,7 +48,7 @@ const ReviewerDashboard = () => {
               Reviewer Portal
             </h1>
             <p className="text-arena-muted text-xs font-bold tracking-[0.3em] uppercase">
-              {reviewer?.name || reviewer?.display_name || 'EVALUATOR'} • {data.statuses[activeTab] === 'open' ? 'Active Duty' : 'Standby'}
+              {reviewer?.name || reviewer?.display_name || 'EVALUATOR'} • {(data?.statuses && data.statuses[activeTab]) === 'open' ? 'Active Duty' : 'Standby'}
             </p>
           </div>
         </div>
@@ -101,10 +105,10 @@ const ReviewerDashboard = () => {
              <div className="h-full flex items-center justify-center text-arena-rose animate-pulse">Syncing Logic Data...</div>
           ) : (
             <div className="flex flex-col gap-4">
-              {currentTeams.length === 0 ? (
+              {(currentTeams || []).length === 0 ? (
                 <div className="h-40 flex items-center justify-center text-arena-muted italic">No teams assigned for this round.</div>
               ) : currentTeams.map(team => (
-                <div key={team.id} className={`flex flex-col md:flex-row items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl transition-all group ${data.statuses[activeTab] === 'open' ? 'hover:bg-white/10 hover:border-arena-rose/30' : 'opacity-60 grayscale'}`}>
+                <div key={team.id} className={`flex flex-col md:flex-row items-center justify-between p-5 bg-white/5 border border-white/10 rounded-xl transition-all group ${(data?.statuses && data.statuses[activeTab]) === 'open' ? 'hover:bg-white/10 hover:border-arena-rose/30' : 'opacity-60 grayscale'}`}>
                   <div className="flex items-center gap-6 mb-4 md:mb-0 w-full md:w-auto">
                     <div className="w-12 h-12 bg-black/40 rounded-lg flex items-center justify-center flex-shrink-0 border border-white/5">
                       <span className="text-xs font-black text-arena-rose capitalize">{team.id.split('-')[1]}</span>
@@ -124,7 +128,7 @@ const ReviewerDashboard = () => {
                          {team.status}
                        </span>
                     </div>
-                    {data.statuses[activeTab] === 'open' ? (
+                    {(data?.statuses && data.statuses[activeTab]) === 'open' ? (
                        <button 
                          onClick={() => navigate(`/reviewer/evaluation/${team.id}?round=${activeTab}`)}
                          className="glass-button !py-2 !px-6 !text-xs whitespace-nowrap"

@@ -42,11 +42,11 @@ const submitEvaluation = async (req, res) => {
 };
 
 const getAssignedTeams = async (req, res) => {
-  const username = req.user.username; // e.g., reviewer_1
-  const slot = username.split('_')[1].toUpperCase(); // R1, R2...
-  const slotKey = "R" + slot;
-
   try {
+    const username = req.user.id || ""; // e.g. reviewer_1
+    const parts = username.split('_');
+    const slot = parts.length > 1 ? parts[1].toUpperCase() : "R1"; // Fallback to R1 for non-standard accounts (admins)
+    const slotKey = "R" + (slot.startsWith('R') ? slot.substring(1) : slot);
     // 1. Fetch ALL round statuses from global config
     const [rd1, rd2, rd3] = await Promise.all([
       supabase.from('global_config').select('value').eq('key', 'review_round_1_status').maybeSingle(),
