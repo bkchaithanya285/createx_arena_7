@@ -1,10 +1,18 @@
 import axios from 'axios';
 
-const rawBaseURL = import.meta.env.VITE_API_BASE_URL || `http://${window.location.hostname}:8080/api`;
-const baseURL = rawBaseURL.endsWith('/') ? rawBaseURL : `${rawBaseURL}/`;
+const getRobustBaseURL = () => {
+  let url = import.meta.env.VITE_API_BASE_URL || `http://${window.location.hostname}:8080/api`;
+  
+  // Fix common Render/Production URL omission of /api
+  if (url.includes('onrender.com') && !url.includes('/api')) {
+    url = url.endsWith('/') ? `${url}api` : `${url}/api`;
+  }
+  
+  return url.endsWith('/') ? url : `${url}/`;
+};
 
 const api = axios.create({
-  baseURL
+  baseURL: getRobustBaseURL()
 });
 
 // Request Interceptor: Automatically attach the token to every request
